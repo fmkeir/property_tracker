@@ -62,9 +62,13 @@ class Property
     sql = "SELECT * FROM properties WHERE id = $1"
     values = [property_id]
     db.prepare("find_by_id", sql)
-    found_property = db.exec_prepared("find_by_id", values)
+    result = db.exec_prepared("find_by_id", values)
     db.close()
-    return Property.new(found_property[0])
+    if result.ntuples > 0
+      return Property.new(result[0])
+    else
+      return nil
+    end
   end
 
   def Property.find_by_address(property_address)
@@ -75,12 +79,12 @@ class Property
     sql = "SELECT * FROM properties WHERE address = $1"
     values = [property_address]
     db.prepare("find_by_address", sql)
-    array = db.exec_prepared("find_by_address", values)
+    result = db.exec_prepared("find_by_address", values)
     db.close()
-    if array.first() == nil
-      return nil
+    if result.ntuples > 0
+      return Property.new(result[0])
     else
-      return Property.new(array.first())
+      return nil
     end
   end
 
