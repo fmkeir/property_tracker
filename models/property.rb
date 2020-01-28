@@ -36,7 +36,7 @@ class Property
     (address, value, number_of_bedrooms, year_built) =
     ($1, $2, $3, $4)
     WHERE id = $5"
-    values = [@address, @value, @number_of_bedrooms, @year_built]
+    values = [@address, @value, @number_of_bedrooms, @year_built, @id]
     db.prepare("update", sql)
     db.exec_prepared("update", values)
     db.close()
@@ -53,4 +53,41 @@ class Property
     db.exec_prepared("delete_one", values)
     db.close()
   end
+
+  def Property.find(property_id)
+    db = PG.connect({
+      dbname: "properties",
+      host: "localhost"
+      })
+    sql = "SELECT * FROM properties WHERE id = $1"
+    values = [property_id]
+    db.prepare("find_by_id", sql)
+    found_property = db.exec_prepared("find_by_id", values)
+    db.close()
+    return Property.new(found_property[0])
+  end
+
+  def Property.all()
+    db = PG.connect({
+      dbname: "properties",
+      host: "localhost"
+      })
+    sql = "SELECT * FROM properties"
+    db.prepare("all", sql)
+    properties = db.exec_prepared("all")
+    db.close()
+    return properties.map {|property| Property.new(property)}
+  end
+
+  def Property.delete_all()
+    db = PG.connect({
+      dbname: "properties",
+      host: "localhost"
+      })
+    sql = "DELETE FROM properties"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
+  end
+
 end

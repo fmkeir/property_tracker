@@ -1,6 +1,8 @@
 require('pry-byebug')
 require_relative('models/property')
 
+Property.delete_all()
+
 property1 = Property.new({
   'address' => '123 Castle Terrace',
   'value' => 540000,
