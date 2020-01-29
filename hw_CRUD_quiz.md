@@ -35,7 +35,7 @@ A. A PG result object (like an array of hashes).
 We access the first (and only) index returned to ruby, then access the "id" key which contains the id as a string.
 
 Q9. Why do we use prepared statements when performing database operations?
-A. Prepared statements simplify the syntax for inserting values into SQL commands. It also ensures that only a single SQL command is executed which protects against SQL injection attacks.
+A. Prepared statements simplify the syntax for inserting values into SQL commands. It also ensures that only a single SQL command is executed which protects against SQL injection attacks. It also sanitises the input and allows the user to enter non-escaped characters e.g. `'`
 
 ## Extension Questions
 
